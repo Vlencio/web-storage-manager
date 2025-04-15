@@ -1,0 +1,27 @@
+const forms = document.getElementById("forms");
+
+forms.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    const res = await fetch("http://127.0.0.1:5000/api/login", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'email': email, 'senha':senha})
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        localStorage.setItem("login", "true");
+        window.location.href = "../html/principal.html"
+    } else {
+        alert(data.mensagem);
+    }
+
+
+})
