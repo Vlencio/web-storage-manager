@@ -79,7 +79,7 @@ def adicionar_fornecedor():
     with Banco() as banco:
         banco.cadastrar_fornecedor(nome, cnpj, telefone, email, endereco)
 
-    return jsonify({"mensagem": "Sucesso"}), 200
+    return jsonify({"mensagem": "Sucesso"}), 204
 
 
 

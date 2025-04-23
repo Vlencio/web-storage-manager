@@ -7,16 +7,20 @@ def table():
     cursor = conn.cursor()
 
     cursor.execute('''
-                   CREATE TABLE IF NOT EXISTS produtos (
-                   id INTEGER PRIMARY KEY AUTOINCREMENT,
-                   nome TEXT NOT NULL,
-                   quantidade INTEGER NOT NULL,
-                   ativo BOOLEAN NOT NULL,
-                   data_recebimento DATE NOT NULL,
-                   id_fornecedor INTEGER NOT NULL,
-                   FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id)
-                )
+INSERT INTO fornecedores (nome, cnpj, telefone, email, endereco) VALUES
+('Fornecedora Vale Tudo Ltda', '12.345.678/0001-90', '(11) 91234-5678', 'contato@valetudoltda.com.br', 'Rua das Palmeiras, 123 - São Paulo/SP'),
+('Distribuidora Estrela Azul', '98.765.432/0001-01', '(21) 98765-4321', 'vendas@estrelaazul.com.br', 'Av. Atlântica, 456 - Rio de Janeiro/RJ'),
+('Comercial Nova Era ME', '45.678.912/0001-22', '(31) 99876-1234', 'suporte@novaera.com.br', 'Rua dos Andradas, 789 - Belo Horizonte/MG'),
+('Supra Fornecimentos LTDA', '67.890.123/0001-33', '(51) 99123-4567', 'atendimento@supra.com.br', 'Av. Ipiranga, 321 - Porto Alegre/RS'),
+('Alpha Produtos e Serviços', '23.456.789/0001-44', '(41) 98765-0987', 'contato@alphaps.com.br', 'Rua XV de Novembro, 654 - Curitiba/PR'),
+('Max Supply Importações', '34.567.890/0001-55', '(61) 99654-3210', 'vendas@maxsupply.com.br', 'SQN 210, Bloco B - Brasília/DF'),
+('Delta Comercial BR', '56.789.012/0001-66', '(71) 99234-5670', 'delta@comercialbr.com.br', 'Rua Chile, 890 - Salvador/BA'),
+('FornecPlus Soluções Ltda', '78.901.234/0001-77', '(85) 98760-4321', 'fornecplus@solucoes.com.br', 'Av. Beira Mar, 112 - Fortaleza/CE'),
+('EcoFornecedor Sustentável', '89.012.345/0001-88', '(91) 99110-2233', 'contato@ecofornecedor.com.br', 'Travessa das Flores, 55 - Belém/PA'),
+('Rápido Distribuições S/A', '10.123.456/0001-99', '(62) 99888-7766', 'atendimento@rapidodist.com.br', 'Rua Goiás, 777 - Goiânia/GO');
+
 ''')
+    conn.commit()
     #%%
 
 class Banco():
@@ -90,6 +94,3 @@ class Banco():
             return print(f'Algo deu errado.\n{e}')
 
         return print('Produto cadastrado com sucesso.')
-
-
-
