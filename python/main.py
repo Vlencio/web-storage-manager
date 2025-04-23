@@ -65,7 +65,6 @@ def consultar_fornecedor_parametros():
 
     return jsonify(lista), 200
 
-
 @app.route('/api/cadastrar_fornecedor', methods=['POST'])
 def adicionar_fornecedor():
     json = request.get_json()

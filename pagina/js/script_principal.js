@@ -4,7 +4,7 @@ let isTransitioning = false;
 
 links.forEach(link => {
     if (link.id == 'asideFornecedores') {
-        link.addEventListener('click', tabelar())
+        link.addEventListener('click', () => tabelar())
     }
     
     link.addEventListener('click', () => {
@@ -38,15 +38,9 @@ links.forEach(link => {
     })
 })
 
-async function tabelar(filtros = {}) {
-    const tabela = document.querySelector('#tabela-fornecedores tbody');
-    tabela.innerHTML = ''
-    if (Object.keys(filtros).length > 0) {
-        tabela.innerHTML = '';
-
-        filtros.forEach(fornecedor => {
-            const linha = document.createElement('tr');
-            linha.innerHTML = `
+function criarLinha(fornecedor) {
+    const linha = document.createElement('tr');
+    linha.innerHTML = `
             <td class='px-6 py-3 text-left'>${fornecedor.id}</td>
             <td class='px-6 py-3 text-left'>${fornecedor.nome}</td>
             <td class='px-6 py-3 text-left'>${fornecedor.cnpj}</td>
@@ -54,8 +48,15 @@ async function tabelar(filtros = {}) {
             <td class='px-6 py-3 text-left'>${fornecedor.email}</td>
             <td class='px-6 py-3 text-left'>${fornecedor.endereco}</td>
             `;
-            tabela.appendChild(linha);
-        })
+    return linha;
+    
+}
+
+async function tabelar(filtros = {}) {
+    const tabela = document.querySelector('#tabela-fornecedores tbody');
+    tabela.innerHTML = ''
+    if (Object.keys(filtros).length > 0) {
+        filtros.forEach(fornecedor => tabela.appendChild(criarLinha(fornecedor)));
 
     } else {
 
@@ -67,18 +68,7 @@ async function tabelar(filtros = {}) {
         const dados = await resposta.json();
         tabela.innerHTML = '';
         
-        dados.forEach(fornecedor => {
-            const linha = document.createElement('tr');
-            linha.innerHTML = `
-            <td class='px-6 py-3 text-left'>${fornecedor.id}</td>
-            <td class='px-6 py-3 text-left'>${fornecedor.nome}</td>
-            <td class='px-6 py-3 text-left'>${fornecedor.cnpj}</td>
-            <td class='px-6 py-3 text-left'>${fornecedor.telefone}</td>
-            <td class='px-6 py-3 text-left'>${fornecedor.email}</td>
-            <td class='px-6 py-3 text-left'>${fornecedor.endereco}</td>
-            `;
-            tabela.appendChild(linha);
-        })
+        dados.forEach(fornecedor => tabela.appendChild(criarLinha(fornecedor)));
     }
 
 }
@@ -86,6 +76,7 @@ async function tabelar(filtros = {}) {
 document.getElementById('btnAddFornecedor').addEventListener('click', () => {
     document.getElementById('formFornecedor').classList.remove('hidden');
 });
+
 document.getElementById('btnCancelar').addEventListener('click', () => {
     document.getElementById('formFornecedor').classList.add('hidden');
 });
@@ -118,6 +109,7 @@ document.getElementById('formAdicionar').addEventListener('submit', function (e)
 document.getElementById('btnPesquisar').addEventListener('click', () => {
     document.getElementById('formPesquisar').classList.remove('hidden');
 });
+
 document.getElementById('btnCancelarPesquisa').addEventListener('click', () => {
     document.getElementById('formPesquisar').classList.add('hidden');
 });

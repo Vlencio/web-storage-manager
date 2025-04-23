@@ -55,8 +55,7 @@
 
     <div class="bg-white w-screen h-screen flex">    
         <main class="flex-1 m-4 p-6 bg-gray-200 rounded-2xl shadow-md overflow-auto">
-            <section id="contentDashboard" class="transition-opacity duration-300 opacity-100">
-            </section>
+            <section id="contentDashboard" class="transition-opacity duration-300 opacity-100"></section>
 
             <section id="contentFornecedores" class="transition-opacity duration-300 opacity-0 hidden">
               <div class="overflow-x-auto">
@@ -117,7 +116,29 @@
 
             <section id="contentPedidos" class="transition-opacity duration-300 opacity-0 hidden">Pedidos</section>
 
-            <section id="contentEstoque" class="hidden transition-opacity duration-300 opacity-0">Estoque</section>
+            <section id="contentEstoque" class="hidden transition-opacity duration-300 opacity-0">
+              <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow-md" id="tabela_Produtos">
+                  <thead class="text-gray-700 rounded-lg">
+                    <tr>
+                      <th class="px-6 py-3 text-left">Id</th>
+                      <th class="px-6 py-3 text-left">Nome</th>
+                      <th class="px-6 py-3 text-left">Quantidade</th>
+                      <th class="px-6 py-3 text-left">Ativo</th>
+                      <th class="px-6 py-3 text-left">Data Recebimento</th>
+                      <th class="px-6 py-3 text-left">Id Fornecedor</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+
+
+
+            </section>
 
             <section id="contentConfig" class="hidden transition-opacity duration-300 opacity-0">Config</section>
             
