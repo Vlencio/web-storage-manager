@@ -3,12 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Main</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-500">
-    <button id="botao" class="bg-white p-2 rounded shadow-md">Logout</button>
 
-    <script src="../js/script_principal.js"></script>
+<body class="bg-gray-800 h-screen w-screen flex">
+    <aside class="w-64 bg-white shadow-md flex flex-col p-4">
+        <h1 class="text-xl font-bold text-indigo-500 mb-6">Storage</h1>
+      
+        <div class="flex-1 flex flex-col justify-center">
+          <ul class="space-y-3">
+
+            <li>
+              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full transition-all bg-indigo-500 shadow-md" id="asideDashboard">
+                <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                <span class="text-gray-700">Dashboard</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-gray-200 transition-all" id="asidePedidos">
+                <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                <span class="text-gray-700">Pedidos</span>
+              </a>
+            </li>
+            
+            <li>
+              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-gray-200 transition-all" id="asideFornecedores">
+                <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                <span class="text-gray-700">Fornecedores</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-gray-200 transition-all" id="asideEstoque">
+                <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                <span class="text-gray-700">Estoque</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-gray-200 transition-all" id="asideConfig">
+                <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
+                <span class="text-gray-700">Configurações</span>
+              </a>
+            </li>
+            
+          </ul>
+        </div>
+      </aside>
+
+    <div class="bg-white w-screen h-screen flex">    
+        <main class="flex-1 m-4 p-6 bg-gray-200 rounded-2xl shadow-md overflow-auto">
+            <section id="contentDashboard" class="transition-opacity duration-300 opacity-100">
+            </section>
+
+            <section id="contentFornecedores" class="transition-opacity duration-300 opacity-0 hidden">
+              <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow-md" id="tabela-fornecedores">
+                    <thead class="text-gray-700 rounded-lg">
+                        <tr>
+                          <th class="px-6 py-3 text-left">Id</th>
+                          <th class="px-6 py-3 text-left">Nome</th>
+                          <th class="px-6 py-3 text-left">CNPJ</th>
+                          <th class="px-6 py-3 text-left">Telefone</th>
+                          <th class="px-6 py-3 text-left">Email</th>
+                          <th class="px-6 py-3 text-left">Endereço</th>
+                          <th class="px-6 py-3 items-between">
+                            <button id="btnAddFornecedor" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl">+</button>
+                            <button id="btnPesquisar" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl"><img src="../imgs/lupa.png" alt="img" class="h-3 w-3"></button>
+                          </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                    </tbody>
+                </table>
+            </div>
+            </section>
+            
+            <div id="formFornecedor" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4">Adicionar Fornecedor</h2>
+                <form id="formAdicionar">
+                  <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="CNPJ" name="cnpj" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="Telefone" name="telefone" class="w-full p-2 border rounded mb-2" required>
+                  <input type="email" placeholder="Email" name="email" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="Endereço" name="endereco" class="w-full p-2 border rounded mb-4" required>
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelar" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div id="formPesquisar" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4">Pesquisar</h2>
+                <form id="formPesquisarA">
+                  <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="text" placeholder="CNPJ" name="cnpj" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="text" placeholder="Telefone" name="telefone" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="email" placeholder="Email" name="email" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="text" placeholder="Endereço" name="endereco" class="w-full p-2 border rounded mb-4" autocomplete="off">
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelarPesquisa" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="button" id="btnEnviarPesquisa" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <section id="contentPedidos" class="transition-opacity duration-300 opacity-0 hidden">Pedidos</section>
+
+            <section id="contentEstoque" class="hidden transition-opacity duration-300 opacity-0">Estoque</section>
+
+            <section id="contentConfig" class="hidden transition-opacity duration-300 opacity-0">Config</section>
+            
+        </main>
+    </div>
 </body>
+<script src="../js/script_principal.js"></script>
 </html>
