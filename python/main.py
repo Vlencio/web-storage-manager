@@ -7,10 +7,10 @@ CORS(app)
 
 @app.route('/api/cadastrar', methods=['POST'])
 def cadastro():
-    dados = request.get_json()
-    email = dados.get('email')
-    usuario = dados.get('usuario')
-    senha = dados.get('senha')
+    dado = request.get_json()
+    email = dado.get('email')
+    usuario = dado.get('usuario')
+    senha = dado.get('senha')
     with Banco() as banco:
         banco.cadastrar(email, usuario, senha)
 
@@ -18,9 +18,9 @@ def cadastro():
 
 @app.route('/api/login', methods=['POST'])
 def logar():
-    dados = request.get_json()
-    email = dados.get('email')
-    senha = dados.get('senha')
+    dado = request.get_json()
+    email = dado.get('email')
+    senha = dado.get('senha')
     with Banco() as banco:
         res = banco.login(email, senha)
     if res:
@@ -31,8 +31,8 @@ def logar():
 @app.route('/api/consultar_fornecedor', methods=['GET'])
 def consultar_fornecedor():
     
-    banco = Banco()
-    resultados = banco.consultar_fornecedor()
+    with Banco() as banco:
+        resultados = banco.consultar_fornecedor()
 
     lista = []
     for tupla in resultados:
@@ -43,10 +43,10 @@ def consultar_fornecedor():
 
 @app.route('/api/consultar_fornecedor', methods=['POST'])
 def consultar_fornecedor_parametros():
-    dados = request.get_json()
+    dado = request.get_json()
     chaves = []
     valores = []
-    for chave, valor in dados.items():
+    for chave, valor in dado.items():
         if valor:
             chaves.append(f'{chave} LIKE ?')
             valores.append(f'%{valor}%')
@@ -66,7 +66,7 @@ def consultar_fornecedor_parametros():
     return jsonify(lista), 200
 
 @app.route('/api/cadastrar_fornecedor', methods=['POST'])
-def adicionar_fornecedor():
+def cadastrar_fornecedor():
     json = request.get_json()
     
     nome = json.get('nome')
@@ -80,7 +80,35 @@ def adicionar_fornecedor():
 
     return jsonify({"mensagem": "Sucesso"}), 204
 
+@app.route('/api/consultar_produto', methods=['GET'])
+def consultar_produto():
+    from datetime import datetime
 
+    with Banco() as banco:
+        resultados = banco.consultar_produto()
+    
+    lista = []
+    for dado in resultados:
+        dado = list(dado)
+        dado[4] = datetime.strptime(dado[4], "%Y-%m-%d").strftime("%d/%m/%Y")
+        produto = {"id": dado[0], "nome": dado[1], "quantidade": dado[2], "ativo": dado[3], "data_recebimento": dado[4], "id_fornecedor": dado[5]}
+        lista.append(produto)
+    
+    return jsonify(lista)
+
+@app.route('/api/consultar_produto', methods=['POST'])
+def consultar_produto_parametros():
+    pass
+
+@app.route('/api/cadastrar_produto', methods=['POST'])
+def cadastrar_produto():
+    dados = request.get_json()
+
+@app.route('/api/editar_produto', methods=['POST'])
+def editar_produto():
+    dados = request.get_json()
+    print(dados)
+    return Response(response="200")
 
 if __name__ == '__main__':
     app.run(debug=True)

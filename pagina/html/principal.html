@@ -54,7 +54,9 @@
       </aside>
 
     <div class="bg-white w-screen h-screen flex">    
-        <main class="flex-1 m-4 p-6 bg-gray-200 rounded-2xl shadow-md overflow-auto">
+        
+      <main class="flex-1 m-4 p-6 bg-gray-200 rounded-2xl shadow-md overflow-auto">
+            
             <section id="contentDashboard" class="transition-opacity duration-300 opacity-100"></section>
 
             <section id="contentFornecedores" class="transition-opacity duration-300 opacity-0 hidden">
@@ -97,6 +99,7 @@
                 </form>
               </div>
             </div>
+
             <div id="formPesquisar" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all">
               <div class="bg-white p-6 rounded-lg shadow-lg w-96">
                 <h2 class="text-lg font-bold mb-4">Pesquisar</h2>
@@ -118,7 +121,7 @@
 
             <section id="contentEstoque" class="hidden transition-opacity duration-300 opacity-0">
               <div class="overflow-x-auto">
-                <table class="min-w-full bg-white rounded-lg shadow-md" id="tabela_Produtos">
+                <table class="min-w-full bg-white rounded-lg shadow-md" id="tabela_produtos">
                   <thead class="text-gray-700 rounded-lg">
                     <tr>
                       <th class="px-6 py-3 text-left">Id</th>
@@ -127,6 +130,10 @@
                       <th class="px-6 py-3 text-left">Ativo</th>
                       <th class="px-6 py-3 text-left">Data Recebimento</th>
                       <th class="px-6 py-3 text-left">Id Fornecedor</th>
+                      <th class="px-6 py-3 items-between">
+                        <button id="btnAddProduto" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl">+</button>
+                        <button id="btnPesquisarProduto" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl"><img src="../imgs/lupa.png" alt="img" class="h-3 w-3"></button>
+                      </th>
                     </tr>
                   </thead>
 
@@ -135,15 +142,29 @@
                   </tbody>
                 </table>
               </div>
-
-
-
             </section>
+
+            <div id="formProduto" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4">Adicionar Produto</h2>
+                <form id="formAdicionarProduto">
+                  <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="CNPJ" name="cnpj" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="Telefone" name="telefone" class="w-full p-2 border rounded mb-2" required>
+                  <input type="email" placeholder="Email" name="email" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="Endereço" name="endereco" class="w-full p-2 border rounded mb-4" required>
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelarProduto" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
 
             <section id="contentConfig" class="hidden transition-opacity duration-300 opacity-0">Config</section>
             
         </main>
     </div>
 </body>
-<script src="../js/script_principal.js"></script>
+<script type="module" src="../js/script_principal.js"></script>
 </html>
