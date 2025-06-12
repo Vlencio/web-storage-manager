@@ -26,7 +26,6 @@ export async function tabelar_fornecedores(filtros = {}) {
         
         const dados = await resposta.json();
         tabela.innerHTML = '';
-        
         dados.forEach(fornecedor => tabela.appendChild(criarLinha(fornecedor)))
     }
 

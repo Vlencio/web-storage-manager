@@ -22,9 +22,9 @@
             </li>
 
             <li>
-              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-gray-200 transition-all" id="asidePedidos">
+              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-gray-200 transition-all" id="asideVendas">
                 <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
-                <span class="text-gray-700">Pedidos</span>
+                <span class="text-gray-700">Vendas</span>
               </a>
             </li>
             
@@ -58,6 +58,34 @@
       <main class="flex-1 m-4 p-6 bg-gray-200 rounded-2xl shadow-md overflow-auto">
             
             <section id="contentDashboard" class="transition-opacity duration-300 opacity-100"></section>
+
+
+
+            <section id="contentVendas" class="transition-opacity duration-300 opacity-0 hidden">
+              <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow-md" id="tabela-fornecedores">
+                    <thead class="text-gray-700 rounded-lg">
+                        <tr>
+                          <th class="px-6 py-3 text-left">Id</th>
+                          <th class="px-6 py-3 text-left">Produto</th>
+                          <th class="px-6 py-3 text-left">Quantidade</th>
+                          <th class="px-6 py-3 text-left">Produto</th>
+                          <th class="px-6 py-3 text-left">Email</th>
+                          <th class="px-6 py-3 text-left">Endereço</th>
+                          <th class="px-6 py-3 items-between">
+                            <button id="btnAddFornecedor" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl">+</button>
+                            <button id="btnPesquisar" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl"><img src="../imgs/lupa.png" alt="img" class="h-3 w-3"></button>
+                          </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            
+                    </tbody>
+                </table>
+              </div>
+            </section>
+
+
 
             <section id="contentFornecedores" class="transition-opacity duration-300 opacity-0 hidden">
               <div class="overflow-x-auto">
@@ -117,7 +145,7 @@
               </div>
             </div>
 
-            <section id="contentPedidos" class="transition-opacity duration-300 opacity-0 hidden">Pedidos</section>
+
 
             <section id="contentEstoque" class="hidden transition-opacity duration-300 opacity-0">
               <div class="overflow-x-auto">
@@ -146,13 +174,16 @@
 
             <div id="formProduto" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 transition-all">
               <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 class="text-lg font-bold mb-4">Adicionar Produto</h2>
+                <h2 class="text-lg font-bold mb-4" id="labelAddProduto">Adicionar Produto</h2>
                 <form id="formAdicionarProduto">
-                  <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" required>
-                  <input type="text" placeholder="CNPJ" name="cnpj" class="w-full p-2 border rounded mb-2" required>
-                  <input type="text" placeholder="Telefone" name="telefone" class="w-full p-2 border rounded mb-2" required>
-                  <input type="email" placeholder="Email" name="email" class="w-full p-2 border rounded mb-2" required>
-                  <input type="text" placeholder="Endereço" name="endereco" class="w-full p-2 border rounded mb-4" required>
+                  <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="text" placeholder="Quantidade" name="quantidade" class="w-full p-2 border rounded mb-2"  autocomplete="off" required>
+                  <select name="ativo" class="w-full p-2 border rounded mb-2">
+                    <option value=1>Sim</option>
+                    <option value=0>Não</option>
+                  </select required>
+                  <input type="date" placeholder="DataReceb" name="data_recebimento" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="text" placeholder="IdFornec" name="id_fornecedor" class="w-full p-2 border rounded mb-4" autocomplete="off" required>
                   <div class="flex justify-end gap-2">
                     <button type="button" id="btnCancelarProduto" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
@@ -160,6 +191,42 @@
                 </form>
               </div>
             </div>
+
+            <div id="formProdutoEditar" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4" id="labelAddProduto">Editar Produto</h2>
+                <form id="formAdicionarProduto">
+                  <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="Quantidade" name="quantidade" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="Ativo" name="ativo" class="w-full p-2 border rounded mb-2" required>
+                  <input type="date" placeholder="DataReceb" name="data_recebimento" class="w-full p-2 border rounded mb-2" required>
+                  <input type="text" placeholder="IdFornec" name="id_fornecedor" class="w-full p-2 border rounded mb-4" required>
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelarProdutoEditar" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div id="divformPesquisarProduto" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4" id="labelAddProduto">Pesquisar Produto</h2>
+                <form id="formPesquisarProduto">
+                  <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="text" placeholder="Quantidade" name="quantidade" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="text" placeholder="Ativo" name="ativo" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="date" placeholder="DataReceb" name="data_recebimento" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="text" placeholder="IdFornec" name="id_fornecedor" class="w-full p-2 border rounded mb-4" autocomplete="off">
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelarPesquisaProduto" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="submit" id="btnEnviarPesquisaProduto" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+
 
             <section id="contentConfig" class="hidden transition-opacity duration-300 opacity-0">Config</section>
             

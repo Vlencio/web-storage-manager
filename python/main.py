@@ -98,17 +98,54 @@ def consultar_produto():
 
 @app.route('/api/consultar_produto', methods=['POST'])
 def consultar_produto_parametros():
-    pass
+    dado = request.get_json()
+    chaves = []
+    valores = []
+    for chave, valor in dado.items():
+        if valor:
+            chaves.append(f'{chave} LIKE ?')
+            valores.append(f'%{valor}%')
+    chaves = tuple(chaves)
+    valores = tuple(valores)
+    if len(chaves) <= 0:
+        return Response(status=204)
+    with Banco() as banco:
+        resultados = banco.consultar_produto(coluna=chaves, parametros=valores)
+    
+
+    lista = []
+    for tupla in resultados:
+        produto = {"id": tupla[0], "nome": tupla[1], "quantidade": tupla[2], "ativo": tupla[3], "data_recebimento": tupla[4], "id_fornecedor": tupla[5]}
+        lista.append(produto)
+
+    return jsonify(lista), 200
 
 @app.route('/api/cadastrar_produto', methods=['POST'])
 def cadastrar_produto():
-    dados = request.get_json()
+    json = request.get_json()
+    
+    nome = json.get('nome')
+    quantidade = json.get('quantidade')
+    ativo = json.get('ativo')
+    data_recebimento = json.get('data_recebimento')
+    endereco = json.get('id_fornecedor')
 
-@app.route('/api/editar_produto', methods=['POST'])
+    with Banco() as banco:
+        banco.cadastrar_produto(nome, quantidade, ativo, data_recebimento, endereco)
+
+    return jsonify({"mensagem": "Sucesso"}), 204
+
+@app.route('/api/editar_produto', methods=['PATCH'])
 def editar_produto():
     dados = request.get_json()
-    print(dados)
-    return Response(response="200")
+
+    with Banco() as banco:
+        response = banco.editar_produto(dados)
+        if response:
+            return Response(response='200')
+        else:
+            return Response(response='401')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
