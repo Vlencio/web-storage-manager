@@ -2,7 +2,7 @@ function criarLinha(venda) {
     const linha = document.createElement('tr');
     linha.innerHTML = `
             <td class='px-6 py-3 text-left' id="id-venda-${venda.id}">${venda.id}</td>
-            <td class='px-6 py-3 text-left' id="id-venda-${venda.id}">${venda.id_produto}</td>
+            <td class='px-6 py-3 text-left' data-produto="${venda.id_produto}" id="id-venda-${venda.id}">${venda.id_produto}</td>
             <td class='px-6 py-3 text-left' id="id-venda-${venda.id}">${venda.nome_produto}</td>
             <td class='px-6 py-3 text-left' id="id-venda-${venda.id}">${venda.quantidade_venda}</td>
             <td class='px-6 py-3 text-left' id="id-venda-${venda.id}">R$${venda.venda_unitaria}</td>
@@ -40,6 +40,7 @@ async function editar_venda() {
             const valores = [];
             dados.forEach(dado => valores.push(dado.textContent.trim()));
             valores[4] = valores[4].replace("R$", '')
+            console.log(valores)
 
             const form = document.getElementById('formVendasEditar') 
 
@@ -55,7 +56,7 @@ async function editar_venda() {
             form.addEventListener("submit", async function (e) {
                 e.preventDefault();
 
-                const dados = {"id": id};
+                const dados = {"id": id, "id_produto": valores[1]};
                 inputs.forEach(input => {
                     dados[input.name] = input.value
                 });

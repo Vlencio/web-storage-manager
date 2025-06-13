@@ -148,10 +148,17 @@ class Banco():
 
     def editar_venda(self, dados):
         produto_id = dados.get('id')
+        produto_id2 = dados.get('id_produto')
+
+        self.cursor.execute('SELECT valor_unitario FROM produtos WHERE id = ?', produto_id2)
+        valor = float(self.cursor.fetchone()[0])
 
         campos = ['quantidade_venda', 'valor', 'data_venda']
         valores = [dados[campo] for campo in campos if campo in dados]
-        virgula = ', '.join([f"{campo} = ?" for campo in campos if campo in dados])
+        lucro = float(valores[1]) - float(valor)
+        campos.append('lucro')
+        valores.append(lucro)
+        virgula = ', '.join([f"{campo} = ?" for campo in campos if campo in dados]) + f', lucro = ?'
         try:
             self.cursor.execute(f'''
                                 UPDATE vendas
@@ -168,9 +175,11 @@ class Banco():
     def dashboard(self):
         self.cursor.execute('SELECT lucro FROM vendas')
         tuplas = self.cursor.fetchall()
+        self.cursor.execute('SELECT quantidade_venda FROM vendas')
+        tuplas2 = self.cursor.fetchall()
         lucro = 0
-        for tupla in tuplas:
-            lucro += float(tupla[0])
+        for tupla, tupla2 in zip(tuplas, tuplas2):
+            lucro += float(tupla[0]) * tupla2[0]
         
         self.cursor.execute('SELECT quantidade FROM produtos WHERE ativo = 1')
         tuplas = self.cursor.fetchall()
