@@ -4,8 +4,10 @@ function criarLinha(produto) {
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.id}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.nome}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.quantidade}</td>
+            <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.valor_unitario}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.ativo ? 'Sim': 'Não'}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.data_recebimento}</td>
+            <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.nome_fornecedor}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.id_fornecedor}</td>
             <td class='px-6 py-3 text-left'><button class="botaoEditar font-bold" data-id="${produto.id}">Editar</button></td>
             `;
@@ -17,7 +19,6 @@ export async function tabelar_produtos(filtros = {}) {
     tabela.innerHTML = ''
     if (Object.keys(filtros).length > 0) {
         filtros.forEach(produto => tabela.appendChild(criarLinha(produto)));
-
     } else {
 
         const resposta = await fetch('http://127.0.0.1:5000/api/consultar_produto', {
@@ -36,39 +37,118 @@ async function editar_produto() {
         if (e.target && e.target.classList.contains('botaoEditar')) {
             const id = e.target.getAttribute('data-id');
             const dados = document.querySelectorAll(`#id-produto-${id}`);
-            const valores = [];
-            
-            dados.forEach(dado => valores.push(dado.textContent))
-            const btn = document.getElementById('btnAddProduto').click(valores)
 
+            const valores = [];
+            dados.forEach(dado => valores.push(dado.textContent.trim()));
+
+            const form = document.getElementById('formProdutoEditar') 
+
+            form.classList.remove('hidden');
+        
+            const inputs = form.querySelectorAll('input');
+            const data_fudida = document.getElementById('data_recebimento_editar_produto');
             
+            inputs.forEach((input, index) => {
+                input.value = valores[index+1] || '';
+            });
+            data_fudida.value = valores[5] || '';
+            
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const dados = {"id": id};
+                inputs.forEach(input => {
+                    dados[input.name] = input.value
+                });
+
+                await fetch("http://127.0.0.1:5000/api/editar_produto", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json"},
+                    body: JSON.stringify(dados)
+                })
+            })
         }
     })
-}
-
-async function formproduto(parametros = undefined) {
-    
-    document.getElementById('btnAddProduto').addEventListener('click', () => {
-        document.getElementById('formProduto').classList.remove('hidden');
-        if (parametros) {
-            
-        }
-    });
-
 }
 
 export default function produtos() {
     editar_produto()
     
-    document.getElementById('btnAddProduto').addEventListener('click', formproduto);
+    document.getElementById('btnAddProduto').addEventListener('click', () => {
+        document.getElementById('formProduto').classList.remove('hidden');
+    });
+
+    document.getElementById('formAdicionarProduto').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const produto = {
+            nome: formData.get('nome'),
+            quantidade: formData.get('quantidade'),
+            ativo: formData.get('ativo'),
+            data_recebimento: formData.get('data_recebimento'),
+            id_fornecedor: formData.get('id_fornecedor')
+        };
+
+        fetch('http://127.0.0.1:5000/api/cadastrar_produto', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(produto)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('Produto adicionado:', data);
+            document.getElementById('formProduto').classList.add('hidden');
+        })
+        .catch(err => console.error('Erro ao adicionar produto:', err));
+    });
 
     document.getElementById('btnCancelarProduto').addEventListener('click', () => {
         document.getElementById('formProduto').classList.add('hidden');
+    });
+
+    document.getElementById('btnPesquisarProduto').addEventListener('click', () => {
+        document.getElementById('divformPesquisarProduto').classList.remove('hidden');
+    }
+    )
+
+    document.getElementById('btnCancelarPesquisaProduto').addEventListener('click', () => {
+        document.getElementById('divformPesquisarProduto').classList.add('hidden');
+    });
+
+    document.getElementById('btnCancelarProdutoEditar').addEventListener('click', () => {
+        document.getElementById('formProdutoEditar').classList.add('hidden');
     });
 
     document.getElementById('formAdicionarProduto').addEventListener('submit', async function (e) {
         e.preventDefault();
         
     })
+
+    document.getElementById('btnEnviarPesquisaProduto').addEventListener('click', async function (e) {
+            e.preventDefault();
+    
+            const form = document.getElementById('formPesquisarProduto')
+            const formData = new FormData(form);
+    
+            const dados = {};
+            formData.forEach((value, key) => {
+                dados[key] = value;
+            });
+    
+            const resposta = await fetch('http://127.0.0.1:5000/api/consultar_produto', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(dados)
+            });
+    
+            if (resposta.status === 204) {
+                tabelar_produtos()
+                return;
+            }
+    
+            const dadosJson = await resposta.json();
+            tabelar_produtos(dadosJson);
+        });
 }
 

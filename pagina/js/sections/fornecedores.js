@@ -26,7 +26,6 @@ export async function tabelar_fornecedores(filtros = {}) {
         
         const dados = await resposta.json();
         tabela.innerHTML = '';
-        
         dados.forEach(fornecedor => tabela.appendChild(criarLinha(fornecedor)))
     }
 
@@ -60,7 +59,6 @@ export default function fornecedor() {
         })
         .then(res => res.json())
         .then(data => {
-            console.log('Fornecedor adicionado:', data);
             document.getElementById('formFornecedor').classList.add('hidden');
         })
         .catch(err => console.error('Erro ao adicionar fornecedor:', err));

@@ -1,8 +1,11 @@
 import fornecedor, { tabelar_fornecedores } from "./sections/fornecedores.js";
 import produtos, { tabelar_produtos } from "./sections/produtos.js";
+import vendas, {tabelar_vendas} from "./sections/vendas.js";
+import dashboard from "./sections/dashboard.js"
 
 produtos()
 fornecedor()
+vendas()
 
 const links = document.querySelectorAll('[id^="aside"]');
 const sections = document.querySelectorAll('main > section');
@@ -11,6 +14,8 @@ let isTransitioning = false;
 links.forEach(link => {
     if (link.id == 'asideFornecedores') {link.addEventListener('click', () => tabelar_fornecedores())}
     if (link.id == 'asideEstoque') {link.addEventListener('click', () => tabelar_produtos())}
+    if (link.id == 'asideVendas') {link.addEventListener('click', () => tabelar_vendas())}
+    if (link.id == 'asideDashboard') {link.addEventListener('click', () => dashboard())}
     
     link.addEventListener('click', () => {
         if (isTransitioning) return;
@@ -42,3 +47,5 @@ links.forEach(link => {
         }
     })
 })
+
+dashboard();
