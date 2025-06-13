@@ -41,13 +41,6 @@
                 <span class="text-gray-700">Estoque</span>
               </a>
             </li>
-
-            <li>
-              <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-gray-200 transition-all" id="asideConfig">
-                <span class="w-4 h-4 bg-gray-300 rounded-full"></span>
-                <span class="text-gray-700">Configurações</span>
-              </a>
-            </li>
             
           </ul>
         </div>
@@ -57,24 +50,116 @@
         
       <main class="flex-1 m-4 p-6 bg-gray-200 rounded-2xl shadow-md overflow-auto">
             
-            <section id="contentDashboard" class="transition-opacity duration-300 opacity-100"></section>
+            <section id="contentDashboard" class="transition-opacity duration-300 opacity-100">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Dashboard</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Total de Vendas</p>
+                                <p class="text-3xl font-bold text-gray-900" id="totalVendas">R$ 0,00</p>
+                                <p class="text-sm text-green-600 mt-1">
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Produtos em Estoque</p>
+                                <p class="text-3xl font-bold text-gray-900" id="totalProdutos">0</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Fornecedores Ativos</p>
+                                <p class="text-3xl font-bold text-gray-900" id="totalFornecedores">0</p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Últimas Vendas</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full" id="ultimasVendas">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Produto</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Id Produto</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Qtd Vendida</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Valor</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Data Venda</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Lucro</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Produtos com Baixo Estoque</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full" id="baixoEstoque">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Produto</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Estoque</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
 
 
             <section id="contentVendas" class="transition-opacity duration-300 opacity-0 hidden">
               <div class="overflow-x-auto">
-                <table class="min-w-full bg-white rounded-lg shadow-md" id="tabela-fornecedores">
+                <table class="min-w-full bg-white rounded-lg shadow-md" id="tabela-vendas">
                     <thead class="text-gray-700 rounded-lg">
                         <tr>
                           <th class="px-6 py-3 text-left">Id</th>
+                          <th class="px-6 py-3 text-left">Id Produto</th>
                           <th class="px-6 py-3 text-left">Produto</th>
                           <th class="px-6 py-3 text-left">Quantidade</th>
-                          <th class="px-6 py-3 text-left">Produto</th>
-                          <th class="px-6 py-3 text-left">Email</th>
-                          <th class="px-6 py-3 text-left">Endereço</th>
+                          <th class="px-6 py-3 text-left">Valor Unitario Venda</th>
+                          <th class="px-6 py-3 text-left">Data Venda</th>
+                          <th class="px-6 py-3 text-left">Lucro Unitario</th>
                           <th class="px-6 py-3 items-between">
-                            <button id="btnAddFornecedor" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl">+</button>
-                            <button id="btnPesquisar" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl"><img src="../imgs/lupa.png" alt="img" class="h-3 w-3"></button>
+                            <button id="btnAddVendas" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl">+</button>
+                            <button id="btnPesquisarVenda" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl"><img src="../imgs/lupa.png" alt="img" class="h-3 w-3"></button>
                           </th>
                         </tr>
                     </thead>
@@ -85,6 +170,53 @@
               </div>
             </section>
 
+            <div id="formVendas" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4" id="labelAddProduto">Adicionar Venda</h2>
+                <form id="formAdicionarVendas">
+                  <input type="text" placeholder="Id Produto" name="id_produto" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="text" placeholder="Quantidade" name="quantidade" class="w-full p-2 border rounded mb-2"  autocomplete="off" required>
+                  <input type="text" placeholder="Valor Unitario Venda" name="venda_unitaria" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="date" placeholder="Data Venda" name="data_venda" class="w-full p-2 border rounded mb-4" autocomplete="off" required>
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelarVenda" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div id="divformPesquisarVenda" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4" id="labelAddProduto">Pesquisar Venda</h2>
+                <form id="formPesquisarVenda">
+                  <input type="text" placeholder="Id Produto" name="id_produto" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="text" placeholder="Nome Produto" name="nome_produto" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="text" placeholder="Quantidade" name="quantidade" class="w-full p-2 border rounded mb-2"  autocomplete="off" required>
+                  <input type="text" placeholder="Valor Unitario Venda" name="venda_unitaria" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="date" placeholder="Data Venda" name="data_venda" class="w-full p-2 border rounded mb-4" autocomplete="off" required>
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelarPesquisaVenda" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="submit" id="btnEnviarPesquisaVenda" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div id="formVendasEditar" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 transition-all">
+              <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-lg font-bold mb-4" id="labelAddProduto">Editar Venda</h2>
+                <form id="formAdicionarVendas">
+                  <input type="text" placeholder="Quantidade" name="quantidade_venda" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <input type="text" placeholder="Valor Unitario Venda" name="valor" class="w-full p-2 border rounded mb-2"  autocomplete="off" required>
+                  <input type="date" placeholder="Data Venda" name="data_venda" class="w-full p-2 border rounded mb-2" autocomplete="off" required>
+                  <div class="flex justify-end gap-2">
+                    <button type="button" id="btnCancelarVendaEditar" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
 
 
             <section id="contentFornecedores" class="transition-opacity duration-300 opacity-0 hidden">
@@ -155,8 +287,10 @@
                       <th class="px-6 py-3 text-left">Id</th>
                       <th class="px-6 py-3 text-left">Nome</th>
                       <th class="px-6 py-3 text-left">Quantidade</th>
+                      <th class="px-6 py-3 text-left">Valor Unitário</th>
                       <th class="px-6 py-3 text-left">Ativo</th>
                       <th class="px-6 py-3 text-left">Data Recebimento</th>
+                      <th class="px-6 py-3 text-left">Nome Fornecedor</th>
                       <th class="px-6 py-3 text-left">Id Fornecedor</th>
                       <th class="px-6 py-3 items-between">
                         <button id="btnAddProduto" class="bg-white text-green-500 hover:text-green-600 px-3 py-1 text-xl">+</button>
@@ -198,9 +332,12 @@
                 <form id="formAdicionarProduto">
                   <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" required>
                   <input type="text" placeholder="Quantidade" name="quantidade" class="w-full p-2 border rounded mb-2" required>
-                  <input type="text" placeholder="Ativo" name="ativo" class="w-full p-2 border rounded mb-2" required>
-                  <input type="date" placeholder="DataReceb" name="data_recebimento" class="w-full p-2 border rounded mb-2" required>
-                  <input type="text" placeholder="IdFornec" name="id_fornecedor" class="w-full p-2 border rounded mb-4" required>
+                  <input type="text" placeholder="Valor Unitario" name="valor_unitario" class="w-full p-2 border rounded mb-4" required>
+                  <select name="ativo" class="w-full p-2 border rounded mb-4">
+                    <option value=1>Sim</option>
+                    <option value=2>Não</option>
+                  </select>
+                  <input type="date" name='data_recebimento' placeholder="Data Recebimento" id="data_recebimento_editar_produto" class="w-full p-2 border rounded mb-2" required>
                   <div class="flex justify-end gap-2">
                     <button type="button" id="btnCancelarProdutoEditar" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar</button>
@@ -216,7 +353,7 @@
                   <input type="text" placeholder="Nome" name="nome" class="w-full p-2 border rounded mb-2" autocomplete="off">
                   <input type="text" placeholder="Quantidade" name="quantidade" class="w-full p-2 border rounded mb-2" autocomplete="off">
                   <input type="text" placeholder="Ativo" name="ativo" class="w-full p-2 border rounded mb-2" autocomplete="off">
-                  <input type="date" placeholder="DataReceb" name="data_recebimento" class="w-full p-2 border rounded mb-2" autocomplete="off">
+                  <input type="date" placeholder="Data Recebimento" name="data_recebimento" class="w-full p-2 border rounded mb-2" autocomplete="off">
                   <input type="text" placeholder="IdFornec" name="id_fornecedor" class="w-full p-2 border rounded mb-4" autocomplete="off">
                   <div class="flex justify-end gap-2">
                     <button type="button" id="btnCancelarPesquisaProduto" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancelar</button>
@@ -225,11 +362,6 @@
                 </form>
               </div>
             </div>
-
-
-
-            <section id="contentConfig" class="hidden transition-opacity duration-300 opacity-0">Config</section>
-            
         </main>
     </div>
 </body>

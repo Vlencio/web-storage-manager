@@ -33,7 +33,6 @@ def consultar_fornecedor():
     
     with Banco() as banco:
         resultados = banco.consultar_fornecedor()
-
     lista = []
     for tupla in resultados:
         fornecedor = {"id": tupla[0], "nome": tupla[1], "cnpj": tupla[2], "telefone": tupla[3], "email": tupla[4], "endereco": tupla[5]}
@@ -86,12 +85,10 @@ def consultar_produto():
 
     with Banco() as banco:
         resultados = banco.consultar_produto()
-    
     lista = []
     for dado in resultados:
         dado = list(dado)
-        dado[4] = datetime.strptime(dado[4], "%Y-%m-%d").strftime("%d/%m/%Y")
-        produto = {"id": dado[0], "nome": dado[1], "quantidade": dado[2], "ativo": dado[3], "data_recebimento": dado[4], "id_fornecedor": dado[5]}
+        produto = {"id": dado[0], "nome": dado[1], "quantidade": dado[2], "ativo": dado[3], "data_recebimento": dado[4], "id_fornecedor": dado[5], "nome_fornecedor": dado[6], "valor_unitario": dado[7]}
         lista.append(produto)
     
     return jsonify(lista)
@@ -135,7 +132,7 @@ def cadastrar_produto():
 
     return jsonify({"mensagem": "Sucesso"}), 204
 
-@app.route('/api/editar_produto', methods=['PATCH'])
+@app.route('/api/editar_produto', methods=['POST'])
 def editar_produto():
     dados = request.get_json()
 
@@ -146,6 +143,68 @@ def editar_produto():
         else:
             return Response(response='401')
 
+@app.route('/api/adicionar_venda', methods=['POST'])
+def adicionar_venda():
+    dados = request.get_json()  
+    dados = [dados.get('id_produto'), int(dados.get('quantidade')), int(dados.get('venda_unitaria')), dados.get('data_venda')]
+    with Banco() as banco:
+        banco.adicionar_venda(dados)
+    
+    return Response(response='200')
+
+@app.route('/api/consultar_vendas', methods=['GET'])
+def consultar_vendas():
+    from datetime import datetime
+
+    with Banco() as banco:
+        resultados = banco.consultar_vendas()
+    lista = []
+    for dado in resultados:
+        dado = list(dado)
+        produto = {"id": dado[0], "id_produto": dado[1], "nome_produto": dado[2], "quantidade_venda": dado[3], "venda_unitaria": dado[4], "data_venda": dado[5], "lucro": dado[6]}
+        lista.append(produto)
+    return jsonify(lista)
+
+@app.route('/api/consultar_vendas', methods=['POST'])
+def consultar_venda_parametros():
+    dado = request.get_json()
+    chaves = []
+    valores = []
+    for chave, valor in dado.items():
+        if valor:
+            chaves.append(f'{chave} LIKE ?')
+            valores.append(f'%{valor}%')
+    chaves = tuple(chaves)
+    valores = tuple(valores)
+    if len(chaves) <= 0:
+        return Response(status=204)
+    with Banco() as banco:
+        resultados = banco.consultar_vendas(coluna=chaves, parametros=valores)
+    
+    lista = []
+    for tupla in resultados:
+        produto = {"id": tupla[0], "id_produto": tupla[1], "nome_produto": tupla[2], "quantidade_venda": tupla[3], "venda_unitaria": tupla[4], "data_venda": tupla[5], "lucro": tupla[6]}
+        lista.append(produto)
+
+    return jsonify(lista), 200
+
+@app.route('/api/editar_venda', methods=['PATCH'])
+def editar_venda():
+    dados = request.get_json()
+
+    with Banco() as banco:
+        response = banco.editar_venda(dados)
+        if response:
+            return Response(response='200')
+        else:
+            return Response(response='401')
+
+@app.route('/api/dashboard', methods=['GET'])
+def dashboard():
+    with Banco() as banco:
+        lista = banco.dashboard()
+    
+    return jsonify(lista)
 
 if __name__ == '__main__':
     app.run(debug=True)

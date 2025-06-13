@@ -59,7 +59,6 @@ export default function fornecedor() {
         })
         .then(res => res.json())
         .then(data => {
-            console.log('Fornecedor adicionado:', data);
             document.getElementById('formFornecedor').classList.add('hidden');
         })
         .catch(err => console.error('Erro ao adicionar fornecedor:', err));

@@ -4,8 +4,10 @@ function criarLinha(produto) {
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.id}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.nome}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.quantidade}</td>
+            <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.valor_unitario}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.ativo ? 'Sim': 'Não'}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.data_recebimento}</td>
+            <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.nome_fornecedor}</td>
             <td class='px-6 py-3 text-left' id="id-produto-${produto.id}">${produto.id_fornecedor}</td>
             <td class='px-6 py-3 text-left'><button class="botaoEditar font-bold" data-id="${produto.id}">Editar</button></td>
             `;
@@ -39,23 +41,18 @@ async function editar_produto() {
             const valores = [];
             dados.forEach(dado => valores.push(dado.textContent.trim()));
 
-            const [dia, mes, ano] = valores[4].split('/');
-            const data = `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
-            
-            valores[4] = data
-
             const form = document.getElementById('formProdutoEditar') 
 
             form.classList.remove('hidden');
         
             const inputs = form.querySelectorAll('input');
-
+            const data_fudida = document.getElementById('data_recebimento_editar_produto');
+            
             inputs.forEach((input, index) => {
                 input.value = valores[index+1] || '';
             });
-
-
-
+            data_fudida.value = valores[5] || '';
+            
             form.addEventListener("submit", async function (e) {
                 e.preventDefault();
 
@@ -64,9 +61,8 @@ async function editar_produto() {
                     dados[input.name] = input.value
                 });
 
-
                 await fetch("http://127.0.0.1:5000/api/editar_produto", {
-                    method: "PATCH",
+                    method: "POST",
                     headers: { "Content-Type": "application/json"},
                     body: JSON.stringify(dados)
                 })

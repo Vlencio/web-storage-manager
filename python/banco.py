@@ -5,19 +5,8 @@ def table():
     import sqlite3
     conn = sqlite3.connect('banco.db')
     cursor = conn.cursor()
-
     cursor.execute('''
-                   
-CREATE TABLE vendas (
-                   id INTEGER PRIMARY KEY AUTOINCREMENT,
-                   id_produto TEXT NOT NULL,
-                   nome_produto TEXT NOT NULL,
-                   quantidade_venda INTEGER NOT NULL,
-                   valor REAL NOT NULL,
-                   data_venda DATE NOT NULL,
-                   FOREIGN KEY (id_produto) REFERENCES produtos(id) ON DELETE SET NULL,
-                   FOREIGN KEY (nome_produto) REFERENCES produtos(nome) ON DELETE SET NULL
-                   )
+                ALTER TABLE vendas ADD COLUMN lucro REAL NOT NULL  
 
 ''')
     conn.commit()
@@ -113,11 +102,9 @@ class Banco():
 
     def editar_produto(self, dados):
         produto_id = dados.get('id')
-
         campos = ['nome', 'quantidade', 'ativo', 'data_recebimento', 'id_fornecedor']
         valores = [dados[campo] for campo in campos if campo in dados]
         valores[2] = 1 if valores[2] == 'Sim' else 0
-        print(valores[2])
         virgula = ', '.join([f"{campo} = ?" for campo in campos if campo in dados])
         try:
             self.cursor.execute(f'''
@@ -132,4 +119,66 @@ class Banco():
             print(f'Erro: {e}')
             return False
 
-# %%
+    def adicionar_venda(self, dados):
+        #dados = [dados.get('id_produto'), dados.get('nome_produto'), dados.get('quantidade_venda'), dados.get('valor'), dados.get('data_venda')]
+        self.cursor.execute('SELECT valor_unitario, nome FROM produtos WHERE id = ?', dados[0])
+        consulta = self.cursor.fetchone()
+        dados.append(float(dados[2]) - consulta[0])
+        dados.append(consulta[1])
+        self.cursor.execute('INSERT INTO vendas (id_produto, quantidade_venda, valor, data_venda, lucro, nome_produto) VALUES (?, ?, ? ,?, ?, ?)', dados)
+        self.conn.commit()
+
+        return
+
+    def consultar_vendas(self, coluna = None, parametros = None):
+        try:
+            if not parametros:
+                self.cursor.execute('SELECT * FROM vendas')
+                resultados = self.cursor.fetchall()
+                  
+            else:
+                query = 'SELECT * FROM vendas WHERE ' + ' AND '.join(coluna)
+                self.cursor.execute(query, parametros)
+                resultados = self.cursor.fetchall()
+            
+            return resultados
+        
+        except Exception as e:
+            return print(f'Algo deu errado.\n{e}')
+
+    def editar_venda(self, dados):
+        produto_id = dados.get('id')
+
+        campos = ['quantidade_venda', 'valor', 'data_venda']
+        valores = [dados[campo] for campo in campos if campo in dados]
+        virgula = ', '.join([f"{campo} = ?" for campo in campos if campo in dados])
+        try:
+            self.cursor.execute(f'''
+                                UPDATE vendas
+                                SET {virgula}
+                                WHERE id = ?
+            ''', valores + [produto_id])
+            self.conn.commit()
+            return True
+        
+        except Exception as e:
+            print(f'Erro: {e}')
+            return False
+
+    def dashboard(self):
+        self.cursor.execute('SELECT lucro FROM vendas')
+        tuplas = self.cursor.fetchall()
+        lucro = 0
+        for tupla in tuplas:
+            lucro += float(tupla[0])
+        
+        self.cursor.execute('SELECT quantidade FROM produtos WHERE ativo = 1')
+        tuplas = self.cursor.fetchall()
+        produtos = 0
+        for tupla in tuplas:
+            produtos += int(tupla[0])
+        
+        self.cursor.execute('SELECT * FROM fornecedores')
+        tuplas = self.cursor.fetchall()
+        fornecedores = len(tuplas)
+        return [lucro, produtos, fornecedores]
